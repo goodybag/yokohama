@@ -1,0 +1,5 @@
+{
+    "preset": "google",
+    "excludeFiles": ["dist/**", "node_modules/**"],
+    "esprima": "esprima-fb"
+}
