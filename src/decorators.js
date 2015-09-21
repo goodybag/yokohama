@@ -1,6 +1,8 @@
 import {Inject, InjectPromise, Provide, ProvidePromise, annotate} from 'di';
 import lodash from 'lodash';
 
+import {mergeTargets} from './util';
+
 export function inject(...tokens) {
     const annotation = new Inject(...tokens);
 
@@ -29,11 +31,7 @@ export function dependencies(depTable, children = []) {
     return decorator;
 
     function decorator(fn) {
-        const deps = lodash.chain([{dependencies: depTable}, ...children])
-            .pluck('dependencies')
-            .filter()
-            .reduce((a, b) => ({...a, ...b}))
-            .value();
+        const deps = mergeTargets([{dependencies: depTable}, ...children]);
 
         fn.dependencies = deps;
     }

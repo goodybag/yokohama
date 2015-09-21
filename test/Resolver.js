@@ -1,7 +1,7 @@
 /* globals describe, it, context */
 import expect from 'expect';
 
-import {Resolver, inject, injectPromise} from '../src';
+import {Resolver, inject, injectPromise, dependencies} from '../src';
 
 @injectPromise()
 class TheGoods {
@@ -26,6 +26,11 @@ class SomethingUnrelated {
     }
 }
 
+@dependencies({
+    someOtherThing: SomeOtherThing
+})
+class SomeTarget {}
+
 describe('Resolver', function() {
     it('works?', function*() {
         const resolver = new Resolver({
@@ -39,5 +44,14 @@ describe('Resolver', function() {
 
         expect(someOtherThing.theGoods.goods).toBe('are here');
         expect(somethingUnrelated.isUnrelated()).toBe(true);
+    });
+
+    it('works with @dependencies', function*() {
+        const resolver = Resolver.from([SomeTarget]);
+
+        const results = yield resolver.resolve();
+
+        expect(results.somethingUnrelated).toBe(undefined);
+        expect(results.someOtherThing.theGoods.goods).toBe('are here');
     });
 });

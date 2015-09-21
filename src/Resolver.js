@@ -1,12 +1,18 @@
 import lodash from 'lodash';
-import {provide, inject} from './decorators';
 import {Injector} from 'di';
+
+import {provide, inject} from './decorators';
+import {mergeTargets} from './util';
 
 export class Resolver {
     constructor(depTable, injector = new Injector()) {
         this.dependencies = lodash.map(depTable,
                                        (token, name) => ({token, name}));
         this.injector = injector;
+    }
+
+    static from(targets, ...args) {
+        return new Resolver(mergeTargets(targets), ...args);
     }
 
     resolve() {
