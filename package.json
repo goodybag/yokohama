@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "babel-runtime": "^5.8.20",
-    "di": "^2.0.0-pre-14",
+    "bluebird": "^2.10.2",
     "lodash": "^3.10.1"
   }
 }

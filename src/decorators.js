@@ -1,46 +1,18 @@
-import {Inject, InjectPromise, Provide, ProvidePromise, annotate} from 'di';
-import lodash from 'lodash';
+import {DependencySet} from './dependency-set';
+import {Provider} from './provider';
 
-import {mergeTargets} from './util';
-
-export function inject(...tokens) {
-    const annotation = new Inject(...tokens);
-
-    return decoratorFromAnnotation(annotation);
-}
-
-export function injectPromise(...tokens) {
-    const annotation = new InjectPromise(...tokens);
-
-    return decoratorFromAnnotation(annotation);
-}
-
-export function provide(...tokens) {
-    const annotation = new Provide(...tokens);
-
-    return decoratorFromAnnotation(annotation);
-}
-
-export function providePromise(...tokens) {
-    const annotation = new ProvidePromise(...tokens);
-
-    return decoratorFromAnnotation(annotation);
-}
-
-export function dependencies(depTable, children = []) {
+export function provide(token) {
     return decorator;
 
-    function decorator(fn) {
-        const deps = mergeTargets([{dependencies: depTable}, ...children]);
-
-        fn.dependencies = deps;
+    function decorator(target) {
+        target.provider = new Provider(token, target);
     }
 }
 
-function decoratorFromAnnotation(annotation) {
-    return annotator;
+export function dependencies(...tokens) {
+    return decorator;
 
-    function annotator(fn) {
-        annotate(fn, annotation);
+    function decorator(target) {
+        target.dependencies = DependencySet.fromExpr(tokens);
     }
 }

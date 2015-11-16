@@ -1,11 +1,9 @@
-import lodash from 'lodash';
+import {DependencyList} from './dependency-set';
 
-export function mergeTargets(targets) {
-    const deps = lodash.chain(targets)
-        .pluck('dependencies')
-        .filter()
-        .reduce((a, b) => ({...a, ...b}))
-        .value();
+export function readDependencies(token) {
+    if (typeof token !== 'function') {
+        throw new TypeError(`"${token}" is not a function`);
+    }
 
-    return deps;
+    return token.dependencies || new DependencyList([]);
 }
