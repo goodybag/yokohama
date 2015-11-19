@@ -69,6 +69,14 @@ export class Injector {
     createChild(modules = []) {
         return new ChildInjector(modules, new Map(), this);
     }
+
+    dump(localCache = new Map()) {
+        this.cache.forEach((instance, provider) => {
+            localCache.set(provider.token, instance);
+        });
+
+        return localCache;
+    }
 }
 
 export class ChildInjector extends Injector {
@@ -118,5 +126,12 @@ export class ChildInjector extends Injector {
                 return this.specializes(this.parent.getProviderFor(dep));
             }
         });
+    }
+
+    dump(localCache = new Map()) {
+        this.parent.dump(localCache);
+        super(localCache);
+
+        return localCache;
     }
 }
