@@ -32,6 +32,7 @@
   "dependencies": {
     "babel-runtime": "^5.8.20",
     "bluebird": "^2.10.2",
-    "lodash": "^3.10.1"
+    "lodash": "^3.10.1",
+    "react": "^0.14.2"
   }
 }

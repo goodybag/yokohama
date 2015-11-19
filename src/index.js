@@ -8,4 +8,4 @@ export {
 export {Provider} from './provider';
 export {Injector} from './injector';
 
-export {dependencies, provide} from './decorators';
+export {dependencies, provide, inject} from './decorators';
