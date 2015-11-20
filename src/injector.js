@@ -100,7 +100,7 @@ export class ChildInjector extends Injector {
         } else if (this.providers.has(token)) {
             return super(token, this.providers.get(token));
         } else if (this.tokensForParent.has(token)) {
-            return this.parent.create(provider);
+            return this.parent.load(token);
         } else {
             const provider = this.parent.getProviderFor(token);
 
