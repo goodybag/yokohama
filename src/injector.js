@@ -109,7 +109,7 @@ export class ChildInjector extends Injector {
 
                 return this.create(provider);
             } else {
-                this.tokensForParent.add(provider);
+                this.tokensForParent.add(token);
 
                 return this.parent.create(provider);
             }
