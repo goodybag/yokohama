@@ -93,4 +93,12 @@ describe('Injector', function() {
 
         expect(cunrelated).toBe(unrelated);
     });
+
+    it('should return itself when querying Injector', function*() {
+        const injector = new Injector();
+
+        const result = yield injector.get(Injector);
+
+        expect(result).toBe(injector);
+    });
 });
