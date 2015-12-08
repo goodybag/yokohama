@@ -15,6 +15,8 @@ export class Injector {
 
             this.provide(provider);
         });
+
+        this.provide(new Provider(Injector, returnThis.bind(this)));
     }
 
     provide(provider) {
@@ -134,4 +136,8 @@ export class ChildInjector extends Injector {
 
         return localCache;
     }
+}
+
+function returnThis() {
+    return this;
 }
