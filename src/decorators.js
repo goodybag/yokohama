@@ -5,6 +5,10 @@ import {Provider} from './provider';
 import {readDependencies} from './util';
 
 export function provide(token) {
+    if (token == null) {
+        throw new TypeError('@provide called with an undefined value');
+    }
+
     return decorator;
 
     function decorator(target) {
