@@ -8,9 +8,11 @@ export class DependencySet {
         if (typeof expr === 'function') {
             return new DependencyItem(expr);
         } else if (isArray(expr)) {
-            return new DependencyList(expr);
+            return DependencyList.fromExpr(expr);
+        } else if (typeof expr === 'object') {
+            return DependencyMap.fromExpr(expr);
         } else {
-            return new DependencyMap(expr);
+            return new DependencyItem(expr);
         }
     }
 
@@ -23,17 +25,25 @@ export class DependencySet {
     }
 
     some(fn) {
-        return some(this.set, dep => DependencySet.fromExpr(dep).some(fn));
+        return some(this.set, dep => dep.some(fn));
     }
 }
 
 export class DependencyList extends DependencySet {
+    static fromExpr(expr) {
+        return new DependencyList(expr.map(DependencySet.fromExpr));
+    }
+
     mapPromise(fn) {
         return Promise.all(this.set.map(fn));
     }
 }
 
 export class DependencyMap extends DependencySet {
+    static fromExpr(expr) {
+        return new DependencyMap(mapValues(expr, DependencySet.fromExpr));
+    }
+
     mapPromise(fn) {
         return Promise.props(mapValues(this.set, fn));
     }

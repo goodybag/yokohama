@@ -57,12 +57,14 @@ export class Injector {
     }
 
     get(token) {
-        if (typeof token === 'function') { // If it is a constructor/factory
+        if (token instanceof DependencySet) {
+            return token.mapPromise(depToken => this.get(depToken));
+        } else if (typeof token === 'function') { // If it is a constructor/factory
             return this.load(token);
         } else if (typeof token === 'object') { // If it is an array/object
             const set = DependencySet.fromExpr(token);
 
-            return set.mapPromise(depToken => this.get(depToken));
+            return this.get(set);
         } else {
             throw new TypeError(`Injector#get cannot handle value "${token}"`);
         }

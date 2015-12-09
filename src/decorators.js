@@ -17,10 +17,16 @@ export function provide(token) {
 }
 
 export function dependencies(...tokens) {
+    const set = DependencySet.fromExpr(tokens);
+
+    if (set.some(item => item == null)) {
+        throw new TypeError('@dependencies called with an undefined token');
+    }
+
     return decorator;
 
     function decorator(target) {
-        target.dependencies = DependencySet.fromExpr(tokens);
+        target.dependencies = set;
     }
 }
 
