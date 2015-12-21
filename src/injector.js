@@ -102,7 +102,7 @@ export class ChildInjector extends Injector {
         if (token === Injector) {
             return Promise.resolve(this);
         } else if (this.providers.has(token)) {
-            return super(token, this.providers.get(token));
+            return super.load(token, this.providers.get(token));
         } else if (this.tokensForParent.has(token)) {
             return this.parent.load(token);
         } else {
@@ -134,7 +134,7 @@ export class ChildInjector extends Injector {
 
     dump(localCache = new Map()) {
         this.parent.dump(localCache);
-        super(localCache);
+        super.dump(localCache);
 
         return localCache;
     }
