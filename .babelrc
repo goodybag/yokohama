@@ -1,8 +1,11 @@
 {
-    "optional": ["es7.classProperties", "es7.decorators", "runtime", "es7.objectRestSpread"],
-    "loose": "all",
+    "presets": ["es2015", "react"],
+    "plugins": [
+        "transform-object-rest-spread",
+        "transform-runtime",
+        "transform-decorators-legacy",
+        "transform-class-properties"
+    ],
     "sourceMaps": true,
-    "ignore": [
-        "node_modules/**/*"
-    ]
+    "ignore": ["node_modules"]
 }
