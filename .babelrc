@@ -4,7 +4,8 @@
         "transform-object-rest-spread",
         "transform-runtime",
         "transform-decorators-legacy",
-        "transform-class-properties"
+        "transform-class-properties",
+        "transform-proto-to-assign"
     ],
     "sourceMaps": true,
     "ignore": ["node_modules"]
