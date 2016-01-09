@@ -5,7 +5,7 @@
         "transform-runtime",
         "transform-decorators-legacy",
         "transform-class-properties",
-        "transform-proto-to-assign"
+        ["transform-es2015-classes", { "loose": true }]
     ],
     "sourceMaps": true,
     "ignore": ["node_modules"]
