@@ -11,6 +11,6 @@ gulp.task('build', function() {
     return gulp.src('src/**/*.js')
         .pipe(smaps.init())
         .pipe(babel())
-        .pipe(smaps.write('.'))
+        .pipe(smaps.write('.', {sourceRoot: '/source/src/'}))
         .pipe(gulp.dest('lib'));
 });
