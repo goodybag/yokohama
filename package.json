@@ -1,6 +1,6 @@
 {
   "name": "yokohama",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Opinionated? dependency resolution library",
   "main": "lib/index.js",
   "scripts": {
