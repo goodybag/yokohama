@@ -51,7 +51,7 @@ export function inject(depObj, children = []) {
 
             static contextTypes = {
                 dependencyCache: PropTypes.instanceOf(Map).isRequired
-            }
+            };
 
             constructor(props, context) {
                 super(props, context);
