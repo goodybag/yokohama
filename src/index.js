@@ -5,6 +5,8 @@ export {
     DependencyMap
 } from './dependency-set';
 
+export {makeAnnotation} from './annotations';
+
 export {Provider} from './provider';
 export {Injector} from './injector';
 
