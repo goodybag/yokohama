@@ -20,9 +20,11 @@ export function makeAnnotation(name = 'Annotation') {
     function makeAnnotatedToken(token) {
         class AnnotatedDependency {}
 
-        Object.defineProperty(AnnotatedDependency, 'name', {
-            value: `${name}(${token.name})`
-        });
+        try {
+            Object.defineProperty(AnnotatedDependency, 'name', {
+                value: `${name}(${token.name})`
+            });
+        } catch (err) {}
 
         return AnnotatedDependency;
     }

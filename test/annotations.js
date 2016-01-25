@@ -14,6 +14,9 @@ describe('makeAnnotation', function() {
 
         expect(someAnnotation(Something)).toBe(someAnnotation(Something));
         expect(someAnnotation(Something)).toNotBe(someAnnotation(SomethingElse));
-        expect(someAnnotation(SomethingElse).name).toBe('MyAnnotation(SomethingElse)');
+        expect([
+            'MyAnnotation(SomethingElse)',
+            'AnnotatedDependency',
+        ]).toInclude(someAnnotation(SomethingElse).name);
     });
 });
