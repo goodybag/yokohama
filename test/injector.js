@@ -101,4 +101,40 @@ describe('Injector', function() {
 
         expect(result).toBe(injector);
     });
+
+    it.only('should not have this one complicated bug', function*() {
+        @dependencies()
+        class ThingA {}
+
+        @provide(ThingA)
+        class ThingAMock {}
+
+        @dependencies()
+        class ThingB {}
+
+        @dependencies(ThingA, ThingB)
+        class ThingC {
+            constructor(a, b) {
+                this.a = a;
+                this.b = b;
+            }
+        }
+
+        const injector = new Injector();
+
+        const childInjector = injector.createChild([ThingAMock]);
+
+        const provider = injector.getProviderFor(ThingB);
+        const childProvider = childInjector.getProviderFor(ThingB);
+
+        expect(provider).toBe(childProvider,
+            'parent and child are returning different providers');
+
+        const {parentResult, childResult} = yield {
+            parentResult: injector.get(ThingB),
+            childResult: childInjector.get(ThingB)
+        };
+
+        expect(parentResult).toBe(childResult, '?? what ??');
+    });
 });

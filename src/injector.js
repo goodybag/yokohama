@@ -115,7 +115,7 @@ export class ChildInjector extends Injector {
             } else {
                 this.tokensForParent.add(token);
 
-                return this.parent.create(provider);
+                return this.parent.load(token, provider);
             }
         }
     }
