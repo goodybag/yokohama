@@ -1,11 +1,15 @@
 {
-    "presets": ["es2015-loose", "react"],
     "plugins": [
+        "transform-react-jsx",
+        ["transform-class-properties", {"loose": true}],
+        ["transform-es2015-classes", {"loose": true}],
+        ["transform-es2015-parameters", {"loose": true}],
+        ["transform-es2015-destructuring", {"loose": true}],
+        ["transform-es2015-block-scoping", {"loose": true}],
+        ["transform-runtime", {"polyfill": false}],
+        ["transform-es2015-modules-commonjs", {"loose": true}],
         "transform-object-rest-spread",
-        "transform-runtime",
-        "transform-decorators-legacy",
-        "transform-class-properties"
+        "transform-decorators-legacy"
     ],
-    "sourceMaps": true,
-    "ignore": ["node_modules"]
+    "sourceMaps": true
 }
