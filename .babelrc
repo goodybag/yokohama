@@ -8,7 +8,8 @@
         ["transform-es2015-block-scoping", {"loose": true}],
         ["transform-runtime", {"polyfill": false}],
         ["transform-es2015-modules-commonjs", {"loose": true}],
-        "transform-object-rest-spread",
+        ["transform-es2015-spread", {"loose": true}],
+        ["transform-object-rest-spread", {"loose": true}],
         "transform-decorators-legacy"
     ],
     "sourceMaps": true
