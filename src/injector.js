@@ -16,7 +16,10 @@ export class Injector {
             this.provide(provider);
         });
 
-        this.provide(new Provider(Injector, () => this));
+        const self = this;
+        this.provide(new Provider(Injector, function() {
+            return self;
+        }));
     }
 
     provide(provider) {

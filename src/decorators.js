@@ -47,7 +47,8 @@ export function inject(depObj, children = []) {
         class InjectingContainerComponent extends Component {
             static dependencies = depMap;
             static Dependency = InjectingDependency;
-            static Original = Component;
+            static Original = OriginalComponent;
+            static displayName = `InjectingContainerComponent(${OriginalComponent.displayName || OriginalComponent.name})`;
 
             static contextTypes = {
                 dependencyCache: PropTypes.instanceOf(Map).isRequired
