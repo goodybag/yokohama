@@ -2,7 +2,6 @@
   "name": "yokohama",
   "version": "1.4.1",
   "description": "Opinionated? dependency resolution library",
-  "main": "lib/index.js",
   "scripts": {
     "test": "eslint . && mocha",
     "prepublish": "gulp"

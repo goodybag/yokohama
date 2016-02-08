@@ -4,6 +4,12 @@ import {DependencySet} from './dependency-set';
 import {Provider} from './provider';
 import {readDependencies} from './util';
 
+/**
+ * Decorates the target with a provider
+ * for the given token.
+ *
+ * @param {function} token - The token you want to mock
+ */
 export function provide(token) {
     if (token == null) {
         throw new TypeError('@provide called with an undefined value');
@@ -16,6 +22,19 @@ export function provide(token) {
     }
 }
 
+/**
+ * Decorates the target with a dependency
+ * declaration for for dependency set.
+ *
+ * @example
+ * @dependencies(Foo, {bar: Bar, baz: Baz})
+ * class Something {
+ *     constructor(foo, obj) {
+ *         assert(obj.bar instanceof Bar);
+ *         assert(obj.baz instanceof Baz);
+ * }
+ * @param {...Object} tokens - The dependency set
+ */
 export function dependencies(...tokens) {
     const set = DependencySet.fromExpr(tokens);
 
@@ -37,23 +56,14 @@ export function inject(depObj, children = []) {
 
     function decorator(OriginalComponent) {
         class InjectingDependency {
-            static dependencies = depMap;
-
             constructor(props) {
                 return props;
             }
         }
 
+        InjectingDependency.dependencies = depMap;
+
         class InjectingContainerComponent extends Component {
-            static dependencies = depMap;
-            static Dependency = InjectingDependency;
-            static Original = OriginalComponent;
-            static displayName = `InjectingContainerComponent(${OriginalComponent.displayName || OriginalComponent.name})`;
-
-            static contextTypes = {
-                dependencyCache: PropTypes.instanceOf(Map).isRequired
-            };
-
             constructor(props, context) {
                 super(props, context);
 
@@ -80,6 +90,15 @@ export function inject(depObj, children = []) {
                 );
             }
         }
+
+        InjectingContainerComponent.dependencies = depMap;
+        InjectingContainerComponent.Dependency = InjectingDependency;
+        InjectingContainerComponent.Original = OriginalComponent;
+        InjectingContainerComponent.displayName = `InjectingContainerComponent(${OriginalComponent.displayName || OriginalComponent.name})`;
+
+        InjectingContainerComponent.contextTypes = {
+            dependencyCache: PropTypes.instanceOf(Map).isRequired
+        };
 
         return InjectingContainerComponent;
     }

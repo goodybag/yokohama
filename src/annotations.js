@@ -1,3 +1,15 @@
+/**
+ * Used for making idempotent anotation functions
+ * that can be used for *tagging* resources.
+ *
+ * @example
+ * const Collection = makeAnnotation('Collection');
+ *
+ * assert(Collection(Bar) === Collection(Bar));
+ * assert(Collection(Foo) !== Collection(Bar));
+ * @param {string} [name=Annotation] - Name of the annotation
+ * @returns {function}
+ */
 export function makeAnnotation(name = 'Annotation') {
     const cache = new WeakMap();
 

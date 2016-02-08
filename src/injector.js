@@ -4,6 +4,14 @@ import each from 'lodash/collection/each';
 import {DependencySet} from './dependency-set';
 import {Provider} from './provider';
 
+/**
+ * Contains the cache for dependency instances.
+ * Can be constructed with mock constructors, that
+ * override the original dependency's constructor.
+ *
+ * @param {function[]} [modules] - An array of mocks constructors
+ * @param {Map<function, Provider>} [providers] - (Internal) starting providers
+ */
 export class Injector {
     constructor(modules = [], providers = new Map()) {
         this.cache = new Map();
@@ -26,6 +34,11 @@ export class Injector {
         this.providers.set(provider.token, provider);
     }
 
+    /**
+     * Returns the cached provider instance for
+     * the given token. If it's not found, it
+     * will instantiate and cache a provider.
+     */
     getProviderFor(token) {
         if (this.providers.has(token)) {
             return this.providers.get(token);
@@ -37,6 +50,17 @@ export class Injector {
         }
     }
 
+    /**
+     * Checks the cache for the given token's
+     * provider. If an instance is found in the
+     * cache or the promise cache, it will return
+     * it, otherwise it creates initializes the
+     * given token with `Injector#create`.
+     *
+     * @see Injector#create
+     * @param {function} token
+     * @returns {Promise}
+     */
     load(token, provider = this.getProviderFor(token)) {
         if (this.cache.has(provider)) {
             return Promise.resolve(this.cache.get(provider));
@@ -47,6 +71,14 @@ export class Injector {
         }
     }
 
+    /**
+     * Loads the dependencies of the given
+     * provider and instantiates the provider's
+     * constructor with the given dependencies.
+     *
+     * @param {Provider} provider
+     * @returns Promise
+     */
     create(provider) {
         const dependencies = provider.getDependencies();
 
@@ -59,6 +91,20 @@ export class Injector {
         return promise;
     }
 
+    /**
+     * Loads each dependency in the given
+     * dependency set.
+     *
+     * @example
+     * injector.get(Foo); // => Promise<Foo>
+     * injector.get({
+     *   foo: Foo,
+     *   bar: Bar
+     * }); // => Promise<{foo: Foo, bar: Bar}>
+     * @see Injector#load
+     * @param {(function|Object|Array)} token
+     * @returns {Promise}
+     */
     get(token) {
         if (token instanceof DependencySet) {
             return token.mapPromise(depToken => this.get(depToken));
@@ -73,10 +119,18 @@ export class Injector {
         }
     }
 
+    /**
+     * Constructs a child injector with the
+     * given mock constructors.
+     */
     createChild(modules = []) {
         return new ChildInjector(modules, new Map(), this);
     }
 
+    /**
+     * Serializes the cache into a map of
+     * token -> instance.
+     */
     dump(localCache = new Map()) {
         this.cache.forEach((instance, provider) => {
             localCache.set(provider.token, instance);
@@ -86,6 +140,15 @@ export class Injector {
     }
 }
 
+/**
+ * Child injectors delegate to their parent's
+ * cache and only caches dependencies that
+ * depend on the child's mock constructors.
+ *
+ * @param {function[]} modules
+ * @param {Map<function, Provider} providers
+ * @param {Injector} parent
+ */
 export class ChildInjector extends Injector {
     constructor(modules, providers, parent) {
         super(modules, providers);
@@ -135,6 +198,12 @@ export class ChildInjector extends Injector {
         });
     }
 
+    /**
+     * Joins the parent's cache dump with
+     * locally cached dependencies.
+     *
+     * @see Injector#dump
+     */
     dump(localCache = new Map()) {
         this.parent.dump(localCache);
         super.dump(localCache);
