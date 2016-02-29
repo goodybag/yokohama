@@ -102,7 +102,7 @@ describe('Injector', function() {
         expect(result).toBe(injector);
     });
 
-    it.only('should not have this one complicated bug', function*() {
+    it('should not have this one complicated bug', function*() {
         @dependencies()
         class ThingA {}
 
